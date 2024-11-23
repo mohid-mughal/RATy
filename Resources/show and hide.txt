@@ -1,0 +1,5 @@
+#show files
+attrib -h -s -r FILE
+
+#hide files
+attrib +h +s +r FILE

