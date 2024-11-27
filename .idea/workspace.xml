@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b140b858-e550-48a2-b647-e134851a4d2d" name="Changes" comment="REMOTE ACCESS">
-      <change afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.rat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/files/Installer.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/files/Installer.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlyrat-shell.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlyrat-shell.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +145,7 @@
       <workItem from="1732449331358" duration="1733000" />
       <workItem from="1732454982695" duration="75000" />
       <workItem from="1732523134764" duration="4145000" />
-      <workItem from="1732621520299" duration="24059000" />
+      <workItem from="1732621520299" duration="27383000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -208,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732542850585</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="REMOTE ACCESS">
+      <option name="closed" value="true" />
+      <created>1732729247664</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1732729247664</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
