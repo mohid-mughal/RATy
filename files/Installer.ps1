@@ -66,8 +66,8 @@ $smtpServer = "smtp.gmail.com"
 $smtpPort = 587
 
 # PUT sender and recipient details
-$senderEmail = "test.temp.raty.edu@gmail.com"
-$recipientEmail = "test.temp.raty.edu@gmail.com"
+$senderEmail = "temp.test.raty.edu@gmail.com"
+$recipientEmail = "temp.test.raty.edu@gmail.com"
 $subject = " {New} Test Email from $env:UserName"
 $body = "This is a test email sent from ps1 using mail SMTP."
 
