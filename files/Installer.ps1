@@ -66,13 +66,13 @@ $smtpServer = "smtp.gmail.com"
 $smtpPort = 587
 
 # PUT sender and recipient details
-$senderEmail = "yourAddress@gmail.com"
-$recipientEmail = "yourAddress@gmail.com"
+$senderEmail = "test.temp.raty.edu@gmail.com"
+$recipientEmail = "test.temp.raty.edu@gmail.com"
 $subject = " {New} Test Email from $env:UserName"
 $body = "This is a test email sent from ps1 using mail SMTP."
 
 # PUT the App Password (generated after enabling 2FA)
-$appPassword = "16-Digit-App-Password"  # Use the app-specific password
+$appPassword = "kadn zfcg yvym mosz"  # Use the app-specific password
 
 # Create the SMTP client
 $mailmessage = New-Object system.net.mail.mailmessage
