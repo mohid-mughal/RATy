@@ -1,5 +1,3 @@
-@@ -0,0 +1,8 @@
-
 Set ws = CreateObject("wscript.shell")
 
 wscript.sleep(1000)
