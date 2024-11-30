@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b140b858-e550-48a2-b647-e134851a4d2d" name="Changes" comment="confirm.vbs bug fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/Installer.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/files/Installer.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/wget.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/files/wget.cmd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +150,8 @@
       <workItem from="1732780945471" duration="382000" />
       <workItem from="1732839891558" duration="6250000" />
       <workItem from="1732857184952" duration="285000" />
-      <workItem from="1732894250063" duration="3274000" />
+      <workItem from="1732894250063" duration="4346000" />
+      <workItem from="1732962550070" duration="338000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -280,7 +281,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732905650009</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="confirm.vbs bug fix">
+      <option name="closed" value="true" />
+      <created>1732907722141</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1732907722141</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
